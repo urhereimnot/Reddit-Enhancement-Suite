@@ -1,3 +1,12 @@
+$background-color: hsl(0, 0%, 15%);
+$highlight-background-color: hsl(0, 0%, 20%);
+$header-background-color: rgb(105, 105, 105);
+$border-color: #777;
+$color:  #aaa;
+$link-color: hsl(210, 50%, 70%);
+$title-link-color: hsl(0, 0%, 87%);
+$title-link-visited-color: hsl(0, 0%, 65%);
+
 .res-nightmode {
 	body,
 	body .content,
@@ -13,20 +22,22 @@
 	.side .usertext-body .md ol ol,
 	.side .usertext-body .md ol ol li,
 	.modactionlisting table *,
-	.side .recommend-box .rec-item {
-		background-color: hsl(0, 0%, 15%);
-		border-color: #777;
+	.side .recommend-box .rec-item,
+	.crosspost-preview,
+	.crosspost-thing-preview {
+		background-color: $background-color;
+		border-color: $border-color;
 	}
 
 	.popup,
 	.guider,
 	.guider p {
-		background-color: hsl(0, 0%, 15%);
-		color: #aaa;
+		background-color: $background-color;
+		color: $color;
 	}
 
 	#login_login {
-		background-color: hsl(0, 0%, 20%);
+		background-color: $highlight-background-color;
 		color: #bbb;
 	}
 
@@ -35,7 +46,7 @@
 	.read-next,
 	.drop-choices {
 		border-color: hsl(0, 0%, 30%);
-		background-color: hsl(0, 0%, 20%);
+		background-color: $highlight-background-color;
 	}
 
 	.drop-choices {
@@ -55,7 +66,7 @@
 	}
 
 	.RESCloseButton:hover {
-		background-color: hsl(0, 0%, 20%);
+		background-color: $highlight-background-color;
 	}
 
 	#RESHoverContainer::after {
@@ -106,7 +117,7 @@
 	#RESShortcutsAddFormContainer {
 		color: #ddd;
 		border-color: hsl(0, 0%, 30%);
-		background-color: hsl(0, 0%, 20%);
+		background-color: $highlight-background-color;
 	}
 
 	.login-form-side {
@@ -120,7 +131,7 @@
 
 	#header,
 	.liveupdate-home .content {
-		background-color: rgb(105, 105, 105);
+		background-color: $header-background-color;
 	}
 
 	#jumpToContent {
@@ -281,7 +292,8 @@
 	.sidebox,
 	.subreddit-info,
 	.raisedbox,
-	.login-form-side {
+	.login-form-side,
+	.interstitial-subreddit-description {
 		background-color: #393939;
 		border-color: #151515;
 		color: #aaa;
@@ -297,7 +309,7 @@
 
 		&:hover {
 			border-color: hsl(0, 0%, 20%);
-			background: hsl(0, 0%, 20%);
+			background: $highlight-background-color;
 
 			a {
 				color: rgb(20, 150, 220);
@@ -318,12 +330,13 @@
 		background-color: #369;
 	}
 
-	input[type="text"],
-	input[type="password"],
+	input[type='number'],
+	input[type='text'],
+	input[type='password'],
 	.c-form-control {
 		color: #ccc;
 		border: 1px solid hsl(0, 0%, 30%);
-		background-color: hsl(0, 0%, 20%);
+		background-color: $highlight-background-color;
 	}
 
 	.content textarea {
@@ -341,7 +354,8 @@
 	.unfriend-button .option,
 	.RESDashboardComponent .widgetPath,
 	.entry .buttons li.reported-stamp,
-	.pretty-button {
+	.pretty-button,
+	.report-reasons {
 		color: #000;
 	}
 
@@ -355,7 +369,7 @@
 
 	.nextprev a {
 		background: #777;
-		border-color: hsl(0, 0%, 20%);
+		border-color: $highlight-background-color;
 		color: #ddd;
 	}
 
@@ -399,13 +413,7 @@
 	}
 
 	.expando-button {
-		opacity: .8;
 		background-color: transparent;
-	}
-
-	.RESdupeimg {
-		color: #eee;
-		font-size: 10px;
 	}
 
 	#sr-autocomplete-area {
@@ -414,9 +422,9 @@
 
 	button,
 	submit,
-	input[type="button"],
-	input[type="submit"],
-	input[type="reset"] {
+	input[type='button'],
+	input[type='submit'],
+	input[type='reset'] {
 		color: #fff;
 		border: 1px outset hsl(0, 0%, 50%);
 		background-color: hsl(0, 0%, 30%);
@@ -435,8 +443,7 @@
 	#RESShortcutsSort,
 	#RESShortcutsRight,
 	#RESShortcutsLeft,
-	#RESShortcutsAdd,
-	#RESShortcutsTrash {
+	#RESShortcutsAdd {
 		background: #ccc;
 	}
 
@@ -496,8 +503,8 @@
 		background-color: rgb(42, 51, 64);
 	}
 
-	.comment .md p a[href="/spoiler"],
-	.comment .md p a[href="#spoiler"] {
+	.comment .md p a[href='/spoiler'],
+	.comment .md p a[href='#spoiler'] {
 		background-color: #000;
 		color: #000;
 	}
@@ -514,7 +521,7 @@
 	#header-bottom-right,
 	#srList,
 	.dropdown.lightdrop .drop-choices {
-		background-color: hsl(0, 0%, 20%);
+		background-color: $highlight-background-color;
 	}
 
 	#srList tr {
@@ -530,7 +537,7 @@
 		background-color: #aaa;
 	}
 
-	#search input[type="text"] {
+	#search input[type='text'] {
 		color: rgb(255, 255, 255) !important;
 	}
 
@@ -539,12 +546,12 @@
 		color: hsl(0, 0%, 10%);
 	}
 
-	ul.res-search-tabs li {
-		background: linear-gradient(to top, rgb(60, 60, 60), rgb(45, 45, 45));
+	ul.res-search-tabs li a {
+		background-color: rgb(57, 57, 57);
 	}
 
-	ul.res-search-tabs li.res-search-tab-active,
-	.combined-search-page #previoussearch .res-search-pane,
+	&.res-searchHelper-searchPageTabs ul.res-search-tabs li.res-search-tab-active a,
+	&.res-searchHelper-searchPageTabs .combined-search-page #previoussearch .res-search-pane,
 	#RESConsoleContainer,
 	#SearchRES-results-container li,
 	#SearchRES-results-container li:hover,
@@ -558,11 +565,11 @@
 		border-color: #444;
 	}
 
-	.combined-search-page .search-result .search-expando.collapsed::before {
+	&.res-searchHelper-searchPageTabs .combined-search-page .search-result .search-expando.collapsed::before {
 		background: linear-gradient(to bottom, rgba(34, 34, 34, 0) 0%, rgb(34, 34, 34) 100%);
 	}
 
-	.combined-search-page .search-result-group .search-result-group-header {
+	&.res-searchHelper-searchPageTabs .combined-search-page .search-result-group .search-result-group-header {
 		border-bottom-color: rgb(128, 128, 128);
 	}
 
@@ -575,7 +582,7 @@
 	.side a,
 	.link .score.dislikes,
 	.linkcompressed .score.dislikes,
-	a[rel="tag"],
+	a[rel='tag'],
 	.dsq-help,
 	#authorInfoToolTip h3 a,
 	.reddiquette,
@@ -587,7 +594,7 @@
 	.deepthread a,
 	.policy-page .md h1 a,
 	.policy-page .md h3 a {
-		color: hsl(210, 50%, 70%);
+		color: $link-color;
 	}
 
 	.flairselector li a {
@@ -595,12 +602,21 @@
 	}
 
 	.thing .title {
-		color: hsl(0, 0%, 87%);
+		color: $title-link-color;
 
 		.res-nightMode-coloredLinks & {
 			color: hsl(210, 60%, 60%);
 		}
 	}
+
+	.thing .source-url {
+		color: hsl(0, 0%, 80%);
+
+		.res-nightMode-coloredLinks & {
+			color: hsl(210, 60%, 50%);
+		}
+	}
+
 
 	.tagline a {
 		color: hsl(200, 30%, 55%);
@@ -611,13 +627,23 @@
 	}
 
 	.thing .title:visited,
+	.thing.visited .title,
+	.combined-search-page .search-result.visited a,
 	.combined-search-page .search-result a:visited,
 	.combined-search-page .search-result a:visited > mark {
 		// see also _styleTweaks.scss visitedStyle
-		color: hsl(0, 0%, 65%);
+		color: $title-link-visited-color;
 
 		.res-nightMode-coloredLinks & {
 			color: hsl(270, 50%, 65%);
+		}
+	}
+
+	.thing .source-url:visited {
+		color: hsl(0, 0%, 60%);
+
+		.res-nightMode-coloredLinks & {
+			color: hsl(270, 50%, 58%);
 		}
 	}
 
@@ -625,7 +651,7 @@
 		border-color: hsl(0, 0%, 10%);
 	}
 
-	.flaircell input[type="text"] {
+	.flaircell input[type='text'] {
 		border: 1px solid #555;
 	}
 
@@ -680,14 +706,13 @@
 	.usertext-edit textarea,
 	.RESDialogSmall,
 	.c-close,
-	#REScommentNavBox,
 	#BigEditor #BigText,
 	#liveupdate-statusbar,
 	#liveupdate-statusbar.complete,
 	#alert_message input {
 		color: #ccc;
 		border-color: hsl(0, 0%, 30%);
-		background-color: hsl(0, 0%, 20%);
+		background-color: $highlight-background-color;
 	}
 
 	#liveupdate-statusbar.live.connected {
@@ -701,7 +726,7 @@
 	}
 
 	.RESHoverInfoCard::after {
-		border-right-color: hsl(0, 0%, 20%);
+		border-right-color: $highlight-background-color;
 	}
 
 	.RESHoverInfoCard.right::before {
@@ -709,7 +734,7 @@
 	}
 
 	.RESHoverInfoCard.right::after {
-		border-left-color: hsl(0, 0%, 20%);
+		border-left-color: $highlight-background-color;
 	}
 
 	.RESDialogSmall > h3,
@@ -737,6 +762,10 @@
 
 	&.res-commentBoxes .comment {
 		border-color: hsl(0, 0%, 20%) !important;
+
+		&.spam {
+			background-image: linear-gradient(hsl(0, 30%, 30%), hsl(0, 30%, 30%));
+		}
 	}
 
 	&.res-commentBoxes.res-commentHoverBorder .comment:hover {
@@ -892,15 +921,9 @@
 		background-color: #777;
 	}
 
-	.multi-details .subreddits .remove-sr,
-	.multi-details .add-sr .add {
-		border-color: hsl(0, 0%, 15%);
-		background-image: url('../images/nightmode/addsr.png');
-		background-position: 0 0;
-	}
-
-	.multi-details .subreddits .remove-sr {
-		background-position: -3px -15px;
+	.subreddits .remove-sr,
+	.add-sr .add {
+		filter: invert(80%);
 	}
 
 	// Nightmode friendly snoo/balloons image
@@ -977,7 +1000,7 @@
 	}
 
 	.server-seconds {
-		background: hsl(0, 0%, 20%);
+		background: $highlight-background-color;
 		border-color: hsl(0, 0%, 10%);
 	}
 
@@ -987,11 +1010,11 @@
 		background: hsl(0, 0%, 15%);
 	}
 
-	.snoovatar-page .checkbox-label [type="checkbox"] + .proxy-checkbox {
+	.snoovatar-page .checkbox-label [type='checkbox'] + .proxy-checkbox {
 		background: #f00;
 	}
 
-	.snoovatar-page .checkbox-label [type="checkbox"]:checked + .proxy-checkbox {
+	.snoovatar-page .checkbox-label [type='checkbox']:checked + .proxy-checkbox {
 		background: rgb(10, 128, 46);
 	}
 
@@ -1116,10 +1139,10 @@
 		border-color: hsl(0, 0%, 30%);
 	}
 
-	.comment .md p a[href="/spoiler"]:hover,
-	.comment .md p a[href="/spoiler"]:active,
-	.comment .md p a[href="#spoiler"]:hover,
-	.comment .md p a[href="#spoiler"]:active,
+	.comment .md p a[href='/spoiler']:hover,
+	.comment .md p a[href='/spoiler']:active,
+	.comment .md p a[href='#spoiler']:hover,
+	.comment .md p a[href='#spoiler']:active,
 	.addNewWidget,
 	.editWidget,
 	#authorInfoToolTip .option,
@@ -1134,7 +1157,8 @@
 	.snoovatar-page .gold-accent a,
 	.combined-search-page .search-result-subreddit .search-subscribe-button .add.active,
 	.combined-search-page .search-result-subreddit .search-subscribe-button .remove.active,
-	.fancy-toggle-button a {
+	.fancy-toggle-button a,
+	.fancy-toggle-button .multi-count {
 		color: rgb(255, 255, 255);
 	}
 
@@ -1199,8 +1223,8 @@
 		border-color: rgb(60, 60, 60);
 	}
 
-	#RESConsoleContainer input[type="text"],
-	#RESConsoleContainer input[type="password"],
+	#RESConsoleContainer input[type='text'],
+	#RESConsoleContainer input[type='password'],
 	#RESConsoleContainer .c-form-control,
 	ul.token-input-list-facebook,
 	#RESConsoleContainer textarea {
@@ -1294,6 +1318,10 @@
 		color: hsl(0, 50%, 50%);
 	}
 
+	.spoiler-stamp {
+		color: rgb(255, 130, 0);
+	}
+
 	.diff_sub {
 		background-color: rgba(240, 128, 128 , .5);
 	}
@@ -1306,7 +1334,7 @@
 		background-color: rgba(255, 255, 0, .4);
 	}
 
-	.hover-bubble.multi-selector .create-multi input[type="text"] {
+	.hover-bubble.multi-selector .create-multi input[type='text'] {
 		color: rgb(192, 78, 81);
 		background-color: inherit;
 	}
@@ -1332,5 +1360,384 @@
 
 	.subreddit-rule-item:hover {
 		background-color: hsl(0, 0%, 17%);
+	}
+
+	#keyHelp {
+		border-color: #999;
+		background-color: #aaa;
+		color: #333;
+
+		td {
+			border-color: #999;
+		}
+	}
+
+	&.res-filteReddit-filterline-pad-until-ready .listing-page .content[role=main] > .spacer:nth-of-type(2)::before,
+	.res-filterline {
+		background-color: rgba(38, 38, 38, .9);
+	}
+
+	.res-filterline {
+		&-filter {
+			border-bottom-color: #383838;
+
+			&-active,
+			&-active:hover {
+				border-bottom-color: #e4e4e4;
+				color: #e4e4e4;
+			}
+		}
+
+		&-dropdown {
+			background-color: #313131;
+			box-shadow: #3c3c3c 2px 2px 2px;
+
+			&-action {
+				border-bottom-color: #404040;
+			}
+		}
+	}
+
+	#REScommentNavBox {
+		#commentNavBy {
+			background-color: #707070;
+		}
+
+		#commentNavUp,
+		#commentNavDown {
+			color: #434343;
+		}
+
+		#commentNavPostCount {
+			color: #9f9f9f;
+		}
+	}
+
+	.res-commentNavToggle {
+		&-choices {
+			background-color: rgba(0, 0, 0, .9);
+			box-shadow: rgb(49, 49, 49) 1px 2px 4px;
+		}
+	}
+
+	.subreddit .usertext .md {
+		background-color: rgb(51, 51, 51);
+		border-color: $border-color;
+	}
+
+	.user-subreddit .path {
+		color: $link-color;
+	}
+
+	.modal {
+		.modal-header-title {
+			color: $color;
+		}
+
+		.modal-header,
+		.field-otp,
+		.modal-content {
+			background-color: rgb(51, 51, 51);
+			border-color: $border-color;
+			color: $color;
+		}
+
+		.c-close {
+			background-color: inherit;
+			filter: invert(100%);
+		}
+	}
+
+	.report-modal {
+		.report-form-bottom-panel .report-form-content-policy a,
+		.report-form-action-desc {
+			color: $link-color;
+		}
+
+		.report-form-bottom-panel .report-form-content-policy p,
+		.report-reason-item .report-reason-display,
+		.report-form-last-step-text,
+		.report-form-last-step-text-custom-rules,
+		.report-form-big-content-policy {
+			color: $color;
+		}
+
+		.c-close {
+			background-color: inherit;
+		}
+
+		.report-form-block-user img,
+		.report-form-blocked-user img {
+			filter: invert(100%);
+		}
+	}
+
+	.crossposting-modal {
+		.crosspost-header-title,
+		.crosspost-label,
+		.crosspost-sublabel {
+			color: $color;
+		}
+
+		.crosspost-description {
+			background-color: rgb(51, 51, 51);
+			border-color: $border-color;
+		}
+
+		.modal-body,
+		.modal-content,
+		.crosspost-field,
+		.crosspost-preview,
+		.crosspost-thing-preview {
+			background-color: $background-color;
+			color: $color;
+		}
+	}
+
+	.tfa-login-modal {
+		.tfa-login-caption {
+			color: $color;
+		}
+
+		.tfa-switch-type-of-code {
+			color: $link-color;
+		}
+
+		.tfa-login-bottom-panel {
+			.tfa-login-having-trouble a {
+				color: $link-color;
+			}
+		}
+	}
+
+	.enable-tfa-modal {
+		.enable-tfa-caption,
+		.pref-otp-qr li {
+			color: $color;
+		}
+
+		.otp-secret-info canvas {
+			border: solid 5mm white;
+		}
+
+		.switch-barcode-and-code {
+			color: $link-color;
+		}
+
+		.enable-tfa-bottom-panel {
+			.enable-tfa-learn-more,
+			.switch-barcode-and-code {
+				a { color: $link-color; }
+			}
+		}
+	}
+
+	.disable-tfa-modal {
+		.disable-tfa-caption {
+			color: $color;
+		}
+
+		.disable-tfa-bottom-panel {
+			.disable-tfa-learn-more {
+				a { color: $link-color; }
+			}
+		}
+	}
+
+	.backup-codes-modal {
+		.backup-codes-caption {
+			color: $color;
+		}
+	}
+
+	.pinnable-content.pinned {
+		background-color: $background-color !important;
+
+		.c-close {
+			background-color: inherit;
+		}
+	}
+
+	.author-tooltip__head {
+		background-color: $background-color;
+		border-color: $border-color;
+	}
+
+	.author-tooltip__credentials-list strong,
+	.author-tooltip__head h3,
+	.author-tooltip__description {
+		color: $color;
+	}
+
+	.author-tooltip__link-list,
+	.author-tooltip__head {
+		a { color: $link-color; }
+		a:hover { color: $link-color; }
+	}
+
+	.desktop-onboarding__description,
+	.desktop-onboarding-sign-up__form-note,
+	.desktop-onboarding-step_sign-up footer,
+	.subreddit-picker__subreddit-name strong {
+		color: $color;
+	}
+
+	.desktop-onboarding-step_sign-up footer {
+		a { color: $link-color; }
+	}
+
+	.desktop-onboarding__col_sign-up_image {
+		opacity: .7;
+	}
+
+	.subreddit-picker,
+	.c-username-picker-shown .desktop-onboarding__col_username_picker {
+		background-color: $background-color;
+		border-color: $border-color;
+	}
+
+	.subreddit-picker__category_selected {
+		background-color: $highlight-background-color;
+	}
+
+	.api-help .overview h2,
+	.api-help .contents .introduction strong {
+		color: $color;
+	}
+
+	.api-help .contents .overview code,
+	.api-help .parameters {
+		background-color: $highlight-background-color;
+	}
+}
+
+.res-d2x-nightmode #container > .App {
+	.ProfileTemplate.m-updated,
+	.ProfileBarDropdown__list,
+	.ProfileSidebar__counterInfo,
+	.ProfileBetaConfirmationPage {
+		background-color: $background-color;
+		border-color: $border-color;
+		color: $color;
+	}
+
+	.SubredditListExpander__more,
+	.SubredditListItem__subredditLink,
+	.TrendingProfilesSidebar__profileName,
+	.TrendingProfilesSidebar__link,
+	.TrendingProfilesSidebar__more,
+	.BlueBar__logout,
+	.BlueBar__username,
+	.BlueBar__prefs,
+	.TabMenu__tab.m-active,
+	.TabMenu__tab,
+	.ProfileBarDropdown__title.m-opened,
+	.ProfileBarDropdown__title,
+	.ProfileBarDropdown__listItem,
+	.ProfileSidebar__reportUserLink,
+	.ProfileSidebar__nameTitleLink,
+	.Footer__link,
+	.Footer__userAgreementLink,
+	.Footer__privacyLink,
+	.Post__origin .Post__username,
+	.Post__authorComment .Post__username,
+	.Post__subredditLink,
+	.CommentTitle__postAuthor,
+	.CommentTitle__subredditName,
+	.Comment.m-op .Comment__author {
+		color: $link-color;
+	}
+
+	.Post__titleLink,
+	.CommentTitle__postTitle {
+		color: $title-link-color;
+	}
+
+	.Post__flatListItem,
+	.Post__titleLink:visited,
+	.CommentTitle__postTitle {
+		color: $title-link-visited-color;
+	}
+
+
+	.ProfileBarDropdown__list:hover
+	.ProfileBarDropdown__listItem:hover {
+		background-color: $header-background-color;
+	}
+
+	.UserTopSubredditsSidebar__header,
+	.SubredditListItem__subscribers,
+	.UserModeratedSubredditsSidebar__header,
+	.UserSpecialsListSidebar__header,
+	.UserSpecialsListSidebar__title,
+	.UserSpecialsListSidebar__date,
+	.TrophyCaseSidebar__header,
+	.TrophyCaseSidebar__trophyTitle,
+	.TrophyCaseSidebar__trophyDescription,
+	.TrendingProfilesSidebar__header,
+	.BlueBar__karma,
+	.ProfileSidebar__displayName,
+	.ProfileSidebar__description,
+	.ProfileSidebar__counters,
+	.ProfileSidebar__followDescription,
+	.Post__score,
+	.StyledHtml,
+	.Post__authorComment .StyledHtml,
+	.Post__prominentComment .StyledHtml,
+	.Post__commentContainer,
+	.ProfileVoiceAd__title,
+	.ProfileVoiceAd__description,
+	.ProfileVoiceAd__button {
+		color: $color;
+	}
+
+	.BlueBar {
+		background: $header-background-color;
+	}
+
+	.BlueBar__account,
+	.ProfileSidebar__titleContainer,
+	.Post,
+	.CommentListing__comment {
+		background-color: rgb(51, 51, 51);
+		border-color: $border-color;
+		color: $color;
+	}
+
+	.SubscriptionBar {
+		background-color: rgb(204, 204, 204);
+	}
+
+	.SubscriptionBar__subredditListTarget {
+		color: #000 !important;
+	}
+
+	.SubredditListItem__subscribe,
+	.SubredditListItem__unsubscribe,
+	.Post__crosspostExpando .Media.m-embed,
+	.Post__crosspostExpando .Media.m-image,
+	.Post__crosspostExpando .Media.m-video,
+	.Media.m-profile.m-embed,
+	.Media.m-profile.m-image,
+	.Media.m-profile.m-video,
+	.StyledHtml pre {
+		background-color: $background-color;
+	}
+
+	.SubredditListDropdown,
+	.SubredditListDropdown__listItem,
+	.SubredditListDropdown__listMore {
+		background-color: $highlight-background-color;
+		color: $color;
+		border-color: $border-color;
+	}
+
+	.SubredditListDropdown__listItem:hover,
+	.Post__comment:hover {
+		background-color: rgb(62, 62, 62);
+	}
+
+	.ProfileVoiceAd {
+		background-color: #202020;
 	}
 }

@@ -1,58 +1,28 @@
+# All browsers
 
+1. Run [`npm run build`](/CONTRIBUTING.md#build-commands) for the desired browser
 
-#Chrome
+## Chrome
 
-`gulp build -b chrome` > `/dist/chrome`
+https://developer.chrome.com/webstore/publish
 
-**Upload at:** https://chrome.google.com/webstore/developer/dashboard
+1. Upload `chrome.zip` to https://chrome.google.com/webstore/developer/dashboard
 
-Info: https://developer.chrome.com/webstore/publish
+## Firefox
 
-#Firefox
+https://developer.mozilla.org/en-US/Add-ons/Distribution
 
-`gulp build -b firefox` > `/dist/firefox`
+1. Upload `firefox.zip` to https://addons.mozilla.org/en-US/developers/addon/submit/1
 
-Upload at: https://addons.mozilla.org/en-US/developers/addon/submit/1
+## Edge
 
-Info: https://developer.mozilla.org/en-US/Add-ons/Distribution
+https://developer.microsoft.com/en-us/microsoft-edge/platform/documentation/extensions/guides/packaging/using-ManifoldJS-to-package-extensions/
 
-#Safari
-Info: https://developer.apple.com/library/safari/documentation/Tools/Conceptual/SafariExtensionGuide/DistributingYourExtension/DistributingYourExtension.html
+1. Run `npm run manifoldjs-package`
+1. Upload `edgeExtension.appx` to https://developer.microsoft.com/en-us/dashboard/apps/overview
 
-# Safari 8 - Self-distribute
+## Opera 
 
-`gulp build -b safari` > `/dist/RES.safariextension`
+https://dev.opera.com/extensions/publishing-guidelines/
 
-1. Safari > Develop > Show extension builder
-1. Build package
-1. Upload .safariextz package to redditenhancementsuite.com
-1. Update the redditnehancementsuite.com update manifest.
-
-# Safari 9+ - Gallery
-
-Follow Safari 8 rules, then submit to gallery:
-https://developer.apple.com/safari/extensions/submission/
-
-
-#Opera 
-
-https://addons.opera.com/developer/
-
-# Opera 20+
-
-https://addons.opera.com/developer/
-
-`gulp build -b oblink` > `/dist/oblink`
-
-Opera20 does have a "Pack extension" button on the extensions page, next to "Load unpacked extension"
-
-"Navigator" is Opera's internal name for Opera20+
-
-# Opera 12.17
-
-https://addons.opera.com/developer/
-
-`gulp build -b opera` > `/dist/opera`
-
-
-"Opera" is Opera's internal name for Opera12
+1. Upload `chrome.zip` to https://addons.opera.com/developer/

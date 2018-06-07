@@ -4,7 +4,3 @@
 # Vendor files
 /lib/vendor/*.js
 !/lib/vendor/index.js
-
-# Antiquated
-/tests
-/utils

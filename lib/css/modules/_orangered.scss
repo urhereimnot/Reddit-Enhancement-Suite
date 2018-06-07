@@ -1,38 +1,39 @@
 #NREMail {
-	display: inline-block;
-	margin-bottom: -2px;
-	margin-top: 5px;
 	width: 15px;
 	height: 10px;
+	margin-left: 4px;
 	background: center center no-repeat;
 
 	&.nohavemail {
-		background-image: url('https://redditstatic.s3.amazonaws.com/mailgray.png');
+		background-image: url('../images/mailgray.png');
 	}
 
 	&.havemail {
-		background-image: url('https://redditstatic.s3.amazonaws.com/mail.png');
-
-		.res-colorblind & {
-			background-image: url('../images/nightmode/aboutHeader.png');
-		}
+		background-image: url('../images/mail.png');
 	}
 }
 
 #NREMailCount {
 	line-height: 12px;
-	margin-top: 4px;
+	margin: 0 0 0 1px;
 }
 
-.res-orangered-hideModMail {
-	#modmail,
-	#modmail + .separator {
+.res-orangered-hideModMail #modmail,
+.res-orangered-hideNewModMail #new_modmail {
+	&,
+	& + .separator {
 		display: none;
 	}
 }
 
-.res-orangered-hideUnreadCount {
-	.message-count { display: none !important; }
+.res-orangered-hideEmptyMail #mail,
+.res-orangered-hideEmptyModMail #modmail,
+.res-orangered-hideEmptyNewModMail #new_modmail {
+	&.nohavemail,
+	&.nohavemail + .separator,
+	&.nohavemail + .message-count + .separator {
+		display: none;
+	}
 }
 
 .res-orangered-retroUnreadCount {

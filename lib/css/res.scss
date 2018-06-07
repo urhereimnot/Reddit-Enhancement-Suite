@@ -1,10 +1,10 @@
-@import '../vendor/guiders';
-@import '../vendor/tokenize';
+@import '../vendor/index';
 
 @import 'zindex';
 @import 'fonts/batch';
 @import 'modules/nightMode';
-@import 'modules/commentBoxes';
+@import 'modules/version';
+@import 'modules/commentStyle';
 @import 'modules/showParent';
 @import 'modules/quickMessage';
 @import 'modules/accountSwitcher';
@@ -14,9 +14,12 @@
 @import 'modules/commentPreview';
 @import 'modules/commentTools';
 @import 'modules/dashboard';
+@import 'modules/menu';
 @import 'modules/newCommentCount';
 @import 'modules/noParticipation';
+@import 'modules/notifications';
 @import 'modules/filteReddit';
+@import 'modules/floater';
 @import 'modules/hover';
 @import 'modules/keyboardNav';
 @import 'modules/neverEndingReddit';
@@ -28,16 +31,21 @@
 @import 'modules/showImages';
 @import 'modules/singleClick';
 @import 'modules/sourceSnudown';
+@import 'modules/spoilerTags';
 @import 'modules/styleTweaks';
 @import 'modules/submitIssue';
 @import 'modules/subredditInfo';
 @import 'modules/subredditManager';
 @import 'modules/tableTools';
+@import 'modules/temporaryDropdownLinks';
 @import 'modules/troubleshooter';
 @import 'modules/userbarHider';
 @import 'modules/userInfo';
+@import 'modules/redditUserInfo';
 @import 'modules/userTagger';
 @import 'modules/voteEnhancements';
+@import 'modules/commentQuickCollapse';
+@import 'modules/wheelBrowse';
 
 body.res-console-open {
 	overflow: hidden;
@@ -144,7 +152,7 @@ body.res-console-open {
 
 	&::before,
 	&::after {
-		font: normal 14px/1 "Batch";
+		font: normal 14px/1 'Batch';
 		vertical-align: middle;
 	}
 
@@ -153,30 +161,21 @@ body.res-console-open {
 		color: #a0e0fd;
 		text-shadow: 0 0 1px #3d6da5, 0 0 1px #3d6da5, 0 0 1px #3d6da5, 0 0 1px #3d6da5, 0 0 1px #3d6da5, 0 0 1px #3d6da5, 0 0 1px #3d6da5, 0 0 1px #3d6da5;
 	}
+}
 
-	&.newNotification::before {
-		content: '\F15B';
-		color: orangered;
-		position: absolute;
-		bottom: 25%;
-		left: 25%;
-		animation: fadeIn .5s ease-out 7 alternate;
-	}
+#RESAnnouncementAlert {
+	display: inline-block;
+	vertical-align: bottom;
+	margin-left: .5em;
+	color: goldenrod;
+	animation: fadeIn .5s ease-out 7 alternate;
 
-	&.newNotification.important::before {
-		animation: gearIconPop 1s ease-out infinite alternate;
-	}
-
-	#header-bottom-right & {
-		cursor: default; // firefox
-
-		&.newNotification {
-			cursor: pointer;
-		}
+	.important {
+		animation: pop 1s ease-out infinite alternate;
 	}
 }
 
-@keyframes gearIconPop {
+@keyframes pop {
 	from { transform: scale(0, 0); }
 	to { transform: scale(1.5, 1.5); }
 }
@@ -209,13 +208,10 @@ body.res-console-open {
 	}
 
 	.toggleButton {
-		float: right;
-		margin: 0 4px 0 0;
-		line-height: inherit;
-
-		span {
-			line-height: 16px;
-		}
+		line-height: 14px;
+		right: 5px;
+		top: 9px;
+		position: absolute;
 	}
 
 	a {
@@ -244,8 +240,12 @@ body.res-console-open {
 }
 
 #RESLogo {
+	display: inline-block;
 	margin-right: 5px;
 	vertical-align: middle;
+	width: 60px;
+	height: 30px;
+	background-image: url('../images/icon60x30.png');
 }
 
 .RESDialogTopBar {
@@ -416,17 +416,9 @@ div.usertext-edit {
 	}
 
 	ul {
-		margin-bottom: 10px;
-		margin-top: 10px;
-
 		&.token-input-list-facebook {
 			margin: 0;
 		}
-	}
-
-	li {
-		list-style-type: disc;
-		margin-left: 15px;
 	}
 }
 
@@ -536,15 +528,15 @@ div.usertext-edit {
 	border-color: #000;
 }
 
-%warningIcon {
+%warning-icon {
 	content: '\F15A';
 	margin-left: 3px;
 	color: rgb(230, 30, 30);
-	font: normal 11px "Batch";
+	font: normal 11px 'Batch';
 }
 
 #RESAllOptionsSpan::after {
-	@extend %warningIcon;
+	@extend %warning-icon;
 }
 
 .optionContainer {
@@ -579,7 +571,7 @@ div.usertext-edit {
 	}
 
 	&.advanced .optionTitle::before {
-		@extend %warningIcon;
+		@extend %warning-icon;
 		margin: 0 4px 0 -15px; // 4+(-15) = 11 == Batch font-size
 	}
 
@@ -589,19 +581,6 @@ div.usertext-edit {
 		border-right: 1px dashed hsl(205, 50%, 78%);
 	}
 
-	.res-icon-button {
-		cursor: pointer;
-		width: 16px;
-		height: 16px;
-		margin-left: 2px;
-		margin-right: 2px;
-		opacity: .4;
-
-		&:hover {
-			opacity: 1;
-		}
-	}
-
 	table {
 		clear: both;
 		width: 100%;
@@ -609,37 +588,42 @@ div.usertext-edit {
 		margin-bottom: 10px;
 	}
 
-	tr .deleteButton,
-	.builderWrap .deleteButton {
-		opacity: .3;
-	}
-
-	tr:hover .deleteButton,
-	.builderWrap:hover > .builderTrailingControls .deleteButton {
-		opacity: 1;
-	}
-
-	.handle {
-		cursor: move;
-	}
-
 	.enum img {
 		max-width: 16px;
 	}
 }
 
-.optionTitle {
-	font-size: 14px;
-	flex: 0 0 auto;
-	min-width: 200px;
+.res-icon-button {
+	cursor: pointer;
+	margin: 0 2px;
+	opacity: .4;
+
+	&:hover {
+		opacity: 1;
+	}
+
+	&.handle { cursor: grab; }
 }
 
-.optionDescription {
-	line-height: 1.5;
+.optionTitle {
+	font-size: 14px;
+	min-width: 200px;
+	flex: 0 0 20%;
+}
+
+.optionKey {
+	font-size: .75em;
+	color: #999;
 }
 
 .optionSetting {
 	white-space: nowrap;
+	flex: 0 0 20%;
+}
+
+.optionDescription {
+	line-height: 1.5;
+	flex-grow: 1;
 }
 
 #RESConsoleContainer input[type=radio],
@@ -650,9 +634,8 @@ div.usertext-edit {
 
 .moduleButton {
 	font: 12px sans-serif;
-	text-align: right;
 	color: rgb(180, 180, 180);
-	padding: 7px 10px 7px 0;
+	padding: 7px 10px;
 	cursor: pointer;
 
 	&.enabled {
@@ -661,14 +644,95 @@ div.usertext-edit {
 
 	&.active {
 		font-weight: bold;
+		box-shadow: inset 5px 0 0 0 rgb(171, 204, 227);
+	}
+
+	small {
+		display: block;
 	}
 }
 
 .toggleButton {
+
 	position: relative;
-	display: inline-block;
+	display: inline-flex;
 	cursor: pointer;
 	white-space: nowrap;
+
+	.toggleThumb {
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		width: 40px;
+		height: 15px;
+		background-color: #ccc;
+		border: 2px solid #ccc;
+		border-radius: 2px;
+		transition: .1s;
+		transition-timing-function: ease-in;
+	}
+
+	&.enabled {
+		&.reverseToggleButton .toggleThumb {
+			background-color: #c66;
+			border-color: #c66;
+		}
+
+		.toggleThumb {
+			background-color: #369;
+			border-color: #369;
+		}
+	}
+
+	.toggleThumb::before {
+		position: absolute;
+		content: '';
+		height: 15px;
+		width: 15px;
+		left: 2px;
+		border-radius: 2px;
+		background-color: white;
+		transition: .4s;
+	}
+
+	&.enabled .toggleThumb::before {
+		transform: translateX(25px);
+	}
+
+	.toggleLabel {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		// Custom toggle labels
+		&[data-disabled-text]::before {
+			content: '\00a0' attr(data-disabled-text);
+			display: block;
+			line-height: 0;
+			opacity: 1;
+		}
+
+		&[data-enabled-text]::after {
+			content: '\A\00a0' attr(data-enabled-text);
+			display: block;
+			line-height: 0;
+			opacity: 0;
+		}
+
+	}
+
+	// Also custom toggle labels
+	&.enabled .toggleLabel {
+		&[data-disabled-text]::before {
+			opacity: 0;
+		}
+
+		&[data-enabled-text]::after {
+			opacity: 1;
+		}
+	}
 
 	input[type=checkbox] {
 		display: none;
@@ -680,67 +744,6 @@ div.usertext-edit {
 		line-height: 20px;
 		display: inline-block;
 		text-align: center;
-	}
-
-	.toggleOn {
-		border: 1px solid #636363;
-		border-right: none;
-		border-radius: 3px 0 0 3px;
-	}
-
-	.toggleOff {
-		border: 1px solid #636363;
-		border-left: none;
-		border-radius: 0 3px 3px 0;
-	}
-
-	&:not(.enabled) .toggleOn,
-	&.reverseToggleButton.enabled .toggleOn {
-		background-color: #ddd;
-		color: #636363;
-	}
-
-	&:not(.enabled) .toggleOff,
-	&.reverseToggleButton.enabled .toggleOff {
-		background-color: #d02020;
-		color: #fff;
-		font-weight: bolder;
-	}
-
-	&.enabled .toggleOn,
-	&.reverseToggleButton:not(.enabled) .toggleOn {
-		background-color: #107ac4;
-		color: #fff;
-		font-weight: bolder;
-	}
-
-	&.enabled .toggleOff,
-	&.reverseToggleButton:not(.enabled) .toggleOff {
-		background-color: #ddd;
-		color: #636363;
-	}
-
-	&::before,
-	&.reverseToggleButton.enabled::before {
-		content: ' ';
-		position: absolute;
-		top: 50%;
-		margin-top: -3px;
-		border: 3px solid;
-		border-color: transparent white;
-		opacity: .3;
-		border-left-width: 0;
-		border-right-width: 5px;
-		left: auto;
-		right: 1px;
-	}
-
-	&.enabled::before,
-	&.reverseToggleButton:not(.enabled)::before {
-		border-left-width: 5px;
-		border-right-width: 0;
-		left: 1px;
-		right: auto;
 	}
 }
 
@@ -754,6 +757,11 @@ div.usertext-edit {
 	margin-right: 10px;
 	display: inline-block;
 	vertical-align: middle;
+}
+
+.moduleKey {
+	font-size: .75em;
+	color: #999;
 }
 
 .optionsTable {
@@ -807,6 +815,11 @@ div.usertext-edit {
 	font-size: 12px;
 	border: 1px solid #636363;
 	border-radius: 3px;
+	overflow: hidden; // Contain the spinner when executing callback
+
+	+ .RESConsoleButton {
+		margin-left: 4px;
+	}
 }
 
 a.RESConsoleButton {
@@ -841,10 +854,10 @@ a.RESConsoleButton {
 	}
 
 	&.optionsSaved::before {
-		background: #225599;
+		background: #259;
 	}
 
-	&::-moz-focus-inner { // scss-lint:disable PseudoElement
+	&::-moz-focus-inner {
 		border: none;
 		padding: 0;
 	}
@@ -917,7 +930,7 @@ a.RESConsoleButton {
 
 // Universal subreddit toggle button (subscribe, filter, shortcut, etc)
 // Borrowed from fancy-toggle-button
-.res-fancy-toggle-button {
+%res-fancy-toggle-button {
 	font-weight: bold;
 	font-size: 10px;
 	color: white;
@@ -928,10 +941,20 @@ a.RESConsoleButton {
 	background-image: linear-gradient(to bottom, rgb(123, 184, 80), rgb(117, 168, 73));
 	border-radius: 3px;
 	cursor: pointer;
+}
+
+.res-fancy-toggle-button {
+	@extend %res-fancy-toggle-button;
 
 	&.remove {
 		background-image: linear-gradient(to bottom, rgb(207, 97, 101), rgb(190, 94, 96));
 	}
+}
+
+span.multi-count {
+	@extend %res-fancy-toggle-button;
+	background: #FF7500;
+	color: white;
 }
 
 .SearchRES-result-header {
@@ -1029,169 +1052,20 @@ a.RESConsoleButton {
 	margin-top: 5px;
 }
 
-#RESNotifications {
-	position: fixed;
-	top: 0;
-	right: 7px;
-	height: auto;
-	width: 300px;
-	background: none;
-	z-index: $zindex-notifications !important;
-	font: 12px/1.6 verdana, arial, sans-serif;
-	color: #000;
-}
-
-.RESNotification {
-	position: relative;
-	background-color: #fff;
-	border: 1px solid rgb(255, 255, 255);
-	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .3);
-	z-index: 1;
-	opacity: 0;
-	top: -10px;
-	transition: top .2s; // opacity handled with JS
-
-	&:not(:first-of-type) {
-		margin-top: 5px;
-	}
-
-	&.transition {
-		top: 0;
-		opacity: 1;
-	}
-
-	&.timerOn {
-		animation: fadeOut, 3s, ease-in, 3s, 1, normal, forwards, running;
-	}
-
-	a {
-		color: #369;
-
-		&:hover {
-			text-decoration: underline;
-		}
-	}
-
-	.RESNotificationToggle {
-		margin-top: .5em;
-		font-size: smaller;
-		font-weight: normal;
-	}
-
-	.RESNotificationButtonBlue {
-		padding: 5px 10px;
-		color: white !important;
-		background-color: #107ac4;
-	}
-
-	.RESNotificationHeader .gearIcon,
-	.RESNotificationClose,
-	.RESNotificationFooter {
-		opacity: .3;
-		transition: opacity .3s linear;
-	}
-
-	&:hover .RESNotificationHeader .gearIcon,
-	&:hover .RESNotificationClose,
-	&:hover .RESNotificationFooter {
-		opacity: 1;
-	}
-}
-
-@keyframes fadeOut {
-	to { opacity: 0; }
-}
-
-.RESNotificationContent {
-	overflow: auto;
-	padding: 15px 10px;
-	color: rgb(0, 0, 0);
-	border-top: 1px solid rgb(230, 230, 230);
-	border-bottom: 1px solid rgb(230, 230, 230);
-
-	h2 {
-		color: #000;
-		margin-bottom: 10px;
-	}
-
-	p {
-		margin: .5em 0;
-	}
-
-	strong {
-		font-weight: bolder;
-	}
-
-	.RESNotificationCTA {
-		margin: 1.5em 0 0;
-	}
-}
-
-.RESNotificationFooter {
-	padding: 10px;
-	color: rgb(140, 140, 140);
-	font-size: 11px;
-
-	input {
-		vertical-align: middle;
-	}
-}
-
-.RESNotificationHeader {
-	min-height: 24px;
-	line-height: 24px;
-	padding: 5px 10px;
-	color: rgb(255, 255, 255);
-	background-color: rgb(60, 60, 60);
-	border-bottom: #c7c7c7;
-
-	h3 {
-		font-size: 12px;
-		font-weight: normal;
-	}
-
-	.gearIcon {
-		float: left;
-		margin-right: 5px;
-
-		&::after {
-			line-height: 1;
-		}
-	}
-}
-
-.RESNotificationClose.RESCloseButton {
-	top: 5px;
-	right: 5px;
-	box-sizing: border-box;
-	border: none;
-	background: hsl(0, 70%, 55%);
-	color: rgb(255, 255, 255);
-	font-weight: bold;
-	border-radius: 3px;
-	line-height: 24px;
-
-	&:hover {
-		border: none;
-		background-color: rgb(200, 20, 20);
-	}
-}
-
 .RES-spoiler {
-	font-style: italic;
-	text-decoration: dotted underline;
-	cursor: help;
+	.RES-spoiler-title {
+		font-style: italic;
+		text-decoration: dotted underline;
+		cursor: help;
+	}
+
+	&:not(:hover):not(:active) .RES-spoiler-contents {
+		display: none;
+	}
 }
 
-.RES-spoiler-contents {
-	display: none;
-}
-
-.RES-spoiler:hover + .RES-spoiler-contents,
-.RES-spoiler:active + .RES-spoiler-contents,
-.RES-spoiler-contents:active,
-.RES-spoiler-contents:hover {
-	display: inline-block;
+.guider ol {
+	margin: 1em 1em 1em 2em;
 }
 
 .guider dl {
@@ -1383,10 +1257,6 @@ body.RESScrollLock {
 	z-index: $zindex-autocomplete-dropdown;
 }
 
-.thing .title.visited {
-	color: #551A8B;
-}
-
 .usertext iframe {
 	border: none;
 }
@@ -1395,44 +1265,20 @@ body.RESScrollLock {
 	content: attr(data-text);
 }
 
-.RESThrobber,
-.RESThrobber::before,
-.RESThrobber::after {
-	font-size: 0;
-	position: relative;
+.RESLoadingSpinner {
+	color: hsl(210, 80%, 50%);
+	font-size: inherit; // Determines size of the icon.
 	display: inline-block;
-	background: #ccf;
-	height: 30px;
-	width: 30px;
+	vertical-align: text-bottom;
+	width: 1em;
+	height: .5em;
+	border-bottom: .5em solid;
 	border-radius: 50%;
-	box-shadow: inset 0 0 5px 1px #222;
-	animation: RESThrobber 1400ms 400ms infinite linear;
+	animation: spin 1000ms 0ms infinite linear;
 }
 
-.RESThrobber {
-	margin: 0 35px -7.5px;
-}
-
-.RESThrobber::before {
-	left: -115%;
-	animation-delay: 200ms;
-}
-
-.RESThrobber::after {
-	left: 115%;
-	animation-delay: 600ms;
-}
-
-.RESThrobber::before,
-.RESThrobber::after {
-	content: '';
-	position: absolute;
-	top: 0;
-}
-
-@keyframes RESThrobber {
-	30% { background: transparent; }
-	70% { background: transparent; }
+@keyframes spin {
+	100% { transform: rotate(360deg); }
 }
 
 // Handle multireddit bar on savedComments page
@@ -1551,47 +1397,13 @@ body.RESScrollLock {
 	bottom: 0;
 }
 
-// tr looks funny with ::after
-// and li looks funny with  ::before
-tr.RESSortPlaceholder::before,
-li.RESSortPlaceholder::after,
-div.RESSortPlaceholder::after {
+.RESSortPlaceholder::after {
 	border: medium dashed grey;
 	color: grey;
 	content: 'drop here';
 	text-align: center;
 	border-radius: 3px;
 	display: block;
-	margin-bottom: 5px;
-}
-
-.optionBuilder {
-	.RESSortPlaceholder::after {
-		padding: 1em 2em;
-	}
-
-	li {
-		list-style-type: none !important;
-		margin-top: .3em;
-		margin-bottom: .3em;
-
-		.dragged {
-			border: medium dashed grey;
-			border-radius: 3px;
-			background-color: #f0f3fc;
-		}
-	}
-
-	input[type="text"],
-	input[type="checkbox"] {
-		float: none;
-		margin-left: initial;
-		width: auto;
-	}
-
-	.handle {
-		cursor: move;
-	}
 }
 
 .builderItem {
@@ -1601,86 +1413,118 @@ div.RESSortPlaceholder::after {
 	padding: .4em .5em;
 	margin-top: .5em;
 	margin-bottom: .5em;
+	line-height: 18px;
 
-	> .handle,
-	> .builderItemControls .res-icon-button {
-		vertical-align: top;
-		font-size: 30pt;
-		width: auto;
-		height: auto;
+	> .builderWrap > .builderControls {
+		display: none;
 	}
 
-	> .builderItemControls .res-icon-button {
-		font-size: 20pt;
+	.builderItemControls {
+		display: flex;
+		margin-bottom: 5px;
+
+		> .builderControls {
+			padding: .3em .2em;
+		}
+
+		.res-icon-button {
+			font-size: 20px;
+
+			&.handle { font-size: 27px; }
+		}
+	}
+}
+
+.builderWrap {
+	display: flex;
+	align-items: center;
+	width: stretch;
+	position: relative;
+}
+
+.builderBlock {
+	width: stretch;
+	flex-wrap: wrap;
+	white-space: pre-wrap;
+
+	input,
+	select {
+		font-size: 1em;
 	}
 
-	.durationField {
-		display: inline-block;
+	&-error {
+		outline: 2px dotted darkred;
 
-		input[type="number"] {
-			width: 3em;
-			//margin-left: 1ex;
+		&::before {
+			content: 'Error: ' attr(error);
+			display: block;
+			color: red;
 		}
 	}
 }
 
 .builderControls {
-	float: left;
-	padding: .1em;
-	vertical-align: top;
+	padding: .2em .1em;
+	align-self: flex-start;
+
+	&.res-icon-button {
+		font-size: 14px;
+	}
 }
 
 .builderTrailingControls {
-	float: right;
+	& { margin-left: auto !important; }
+	& ~ & { margin-left: initial !important; }
+
+	.builderBlock[data-type='group'] + & {
+		position: absolute; // Avoids the delete button taking vertical space, shriking the recursive block
+		right: 0;
+	}
 }
 
 .builderMulti {
-	margin-top: 1em;
-	margin-bottom: 1em;
+	padding: 3px 0;
 
-	li::after {
-		content: ' ';
+	li {
+		padding: 3px 0;
+		list-style-type: none !important;
+
+		.dragged {
+			border: medium dashed grey;
+			border-radius: 3px;
+			background-color: #f0f3fc;
+		}
+
+		&:nth-of-type(2n) {
+			background-color: rgba(10, 10, 10, .05);
+		}
+	}
+
+	&:empty::before {
+		border: medium dashed grey;
+		border-radius: 3px;
+		color: grey;
+		content: 'nothing here yet. add something!';
+		padding: 5px 10px;
+		text-align: center;
 		display: block;
-		clear: both;
-		height: 0;
 	}
-
-	li + li {
-		border-top: 1px lightgray dashed;
-		margin-top: 1px;
-		padding-top: 3px;
-	}
-
-	li:nth-of-type(2n) {
-		background-color: rgba(10, 10, 10, .05);
-	}
-}
-
-
-
-.builderItemControls {
-	display: inline-block;
-	vertical-align: top;
-}
-
-.builderMulti:empty::before {
-	border: medium dashed grey;
-	border-radius: 3px;
-	color: grey;
-	content: 'nothing here yet. add something!';
-	padding: 5px 10px;
-	text-align: center;
-	display: block;
 }
 
 .addBuilderBlock {
-	margin-left: 1.5em;
+	margin: .4em 0 .4em .4em;
+}
+
+.durationField {
+	input[type='number'] {
+		width: 3em;
+	}
 }
 
 .checkset {
 	display: inline-block;
 
-	input[type="checkbox"] {
+	input[type='checkbox'] {
 		display: none;
 	}
 
@@ -1707,7 +1551,7 @@ div.RESSortPlaceholder::after {
 	}
 }
 
-/*
+/*!
 (cs)spinner.css - http://jh3y.github.io/-cs-spinner
 Licensed under the MIT license
 
@@ -1731,7 +1575,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		right: 0;
 		bottom: 0;
 		left: 0;
-		background-color: #999999;
+		background-color: #999;
 		opacity: .6;
 	}
 
@@ -1746,7 +1590,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		margin: -24px 0 0 -24px;
 		transition: all .75s ease 0s;
 		border-radius: 100%;
-		border-top: 4px solid #555555;
+		border-top: 4px solid #555;
 		animation: fadeIn 2s 1 cubic-bezier(.3, .25, .7, .15), standard .75s infinite linear;
 		transform-origin: center;
 	}
@@ -1777,56 +1621,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 }
 
-#url-field {
-	.progress-wrapper {
-		width: 500px;
-		height: 8px;
-		position: absolute;
-		top: 54px;
-		left: 10px;
-		overflow: hidden;
-
-		.progress {
-			display: block;
-			position: absolute;
-			left: 0;
-			top: 0;
-			height: 8px;
-		}
-	}
-
-	.progress {
-		animation: progressbar 1s linear infinite;
-		background-color: #149bdf;
-		background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-		background-size: 40px 40px;
-
-		&.progress-stalled {
-			background-image: none;
-		}
-
-		&.progress-grey {
-			background-color: #888;
-		}
-
-		&.progress-green {
-			background-color: #5eb95e;
-		}
-
-		&.progress-red {
-			background-color: #ff0000;
-		}
-	}
-}
-
-@keyframes progressbar {
-	from {
-		background-position: 0 0;
-	}
-
-	to {
-		background-position: 39px 0;
-	}
+.RESCenteredLoadIndicator {
+	display: flex;
+	justify-content: center;
 }
 
 #RESStyleSheetTipPane {
@@ -1866,4 +1663,65 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	li p {
 		margin: .75em 0;
 	}
+}
+
+.res-step {
+	cursor: pointer;
+	user-select: none;
+
+	&::after {
+		font: normal 18px/16px Batch;
+		content: '\F158';
+		display: inline-block;
+		vertical-align: middle;
+		color: #90acff;
+		width: 16px;
+	}
+
+	&:hover::after {
+		color: #6286f4;
+	}
+
+	&.res-step-reverse::after {
+		transform: scaleX(-1);
+	}
+}
+
+.res-step-progress {
+	font-size: 13px;
+	min-width: 60px;
+	text-align: center;
+}
+
+.tabmenu li.res-tabmenu-button {
+	user-select: none;
+	display: inline-block;
+
+	a {
+		cursor: pointer;
+
+		&[aftercontent]::after {
+			content: attr(aftercontent);
+		}
+	}
+
+	&.selected a:not(:only-child) {
+		&:first-child {
+			border-right: none;
+		}
+
+		&:last-child {
+			border-left: none;
+		}
+	}
+}
+
+#beta-help .help-section::after {
+	margin: .5em;
+	display: block;
+	content: 'Since you are using RES with reddit beta, you should also check out /r/RESissues if you experience bugs.';
+}
+
+.pinnable-content.pinned .dismiss-pinnable {
+	top: 30px !important;
 }

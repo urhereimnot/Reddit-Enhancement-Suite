@@ -1,5 +1,6 @@
-## General
+## General ##
 node_modules/
+npm-debug.log
 
 # Browser extensions and certs
 *.crx
@@ -7,17 +8,17 @@ node_modules/
 *.pem
 *.xpi
 *.nex
-*.safariextz
 *.zip
 
 # Copied files
 /dist/
 
+/tests_output/
 /tests/selenium/opera-profile/
 /tests/selenium/opera-profile-patch/
 /tests/selenium/opera-profile-clean/
 
-## OS X
+## OS X ##
 .DS_Store
 .AppleDouble
 .LSOverride
@@ -44,7 +45,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-## Windows
+## Windows ##
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
@@ -64,6 +65,14 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-## IntelliJ
+## IntelliJ ##
 .idea
 *.iml
+.nyc_output
+
+## Visual Studio ##
+.vscode
+.vs
+
+## NPM package lock ##
+package-lock.json

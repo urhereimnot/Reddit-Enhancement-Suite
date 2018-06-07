@@ -1,68 +1,88 @@
 {
-	"name": "{{prop?title!../package.json}}",
-	"version": "{{prop?version!../package.json}}",
 	"manifest_version": 2,
-	"minimum_chrome_version": "49",
-	"description": "{{prop?description!../package.json}}",
-	"background": {
-		"scripts": [
-			"{{./background.entry.js}}"
-		]
-	},
-	"homepage_url": "http://redditenhancementsuite.com",
-	"options_page": "{{./options.html}}",
-	"content_scripts": [
-		{
-			"matches": [
-				"http://redditenhancementsuite.com/*",
-				"http://reddit.com/*",
-				"https://reddit.com/*",
-				"http://*.reddit.com/*",
-				"https://*.reddit.com/*"
-			],
-			"js": [
-				"{{../lib/main.entry.js}}"
-			],
-			"css": [
-				"{{../lib/css/res.scss}}"
-			],
-			"run_at": "document_start"
-		}
-	],
+	"name": "{{prop-loader?title!../package.json}}",
+	"version": "{{prop-loader?version!../package.json}}",
+	"description": "{{prop-loader?description!../package.json}}",
+	"author": "{{prop-loader?author!../package.json}}",
+	"homepage_url": "{{prop-loader?homepage!../package.json}}",
+	"minimum_chrome_version": "64",
+	"minimum_opera_version": "51",
 	"icons": {
-		"48": "{{./icon48.png}}",
-		"128": "{{./icon128.png}}"
+		"48": "{{../images/icon48.png}}",
+		"128": "{{../images/icon128.png}}"
 	},
 	"page_action": {
 		"default_icon": {
-			"19": "{{./images/css-on-small.png}}",
-			"38": "{{./images/css-on.png}}"
-		},
-		"default_title": "Subreddit Style On"
+			"19": "{{../images/css-on-small.png}}",
+			"38": "{{../images/css-on.png}}"
+		}
 	},
+	"options_ui": {
+		"page": "{{../lib/options.html}}",
+		"open_in_tab": true
+	},
+	"background": {
+		"scripts": [
+			"{{../lib/background.entry.js}}"
+		]
+	},
+	"content_scripts": [{
+		"matches": [
+			"https://*.reddit.com/*"
+		],
+		"exclude_matches": [
+			"https://mod.reddit.com/*",
+			"https://ads.reddit.com/*",
+			"https://i.reddit.com/*",
+			"https://m.reddit.com/*",
+			"https://static.reddit.com/*",
+			"https://thumbs.reddit.com/*",
+			"https://blog.reddit.com/*",
+			"https://code.reddit.com/*",
+			"https://about.reddit.com/*",
+			"https://*.reddit.com/chat/*",
+			"https://*.reddit.com/*.compact",
+			"https://*.reddit.com/*.compact?*",
+			"https://*.reddit.com/*.mobile",
+			"https://*.reddit.com/*.mobile?*",
+			"https://*.reddit.com/*.json",
+			"https://*.reddit.com/*.json?*",
+			"https://*.reddit.com/*.json-html",
+			"https://*.reddit.com/*.json-html?*"
+		],
+		"js": [
+			"{{../lib/foreground.entry.js}}"
+		],
+		"css": [
+			"{{../lib/css/res.scss}}"
+		],
+		"run_at": "document_start"
+	}],
 	"permissions": [
+		"https://*.reddit.com/*",
 		"cookies",
+		"identity",
 		"tabs",
 		"history",
 		"storage",
 		"unlimitedStorage",
-		"http://redditenhancementsuite.com/",
-		"http://reddit.com/*",
-		"https://reddit.com/*",
-		"http://*.reddit.com/*",
-		"https://*.reddit.com/*",
-		"http://min.us/api/*",
-		"http://*.flickr.com/photos/*",
-		"http://img.photobucket.com/*",
-		"http://noembed.com/embed?url=*"
+		"webRequest"
 	],
 	"optional_permissions": [
+		"downloads",
+
 		"https://api.twitter.com/*",
-		"https://onedrive.live.com/*",
-		"http://1drv.ms/*",
-		"*://backend.deviantart.com/oembed?url=*",
-		"*://api.gyazo.com/api/oembed*",
-		"*://codepen.io/api/oembed*",
-		"*://api.tumblr.com/v2/blog/*/posts?api_key=*&id=*"
+		"https://backend.deviantart.com/oembed",
+		"https://api.gyazo.com/api/oembed",
+		"https://codepen.io/api/oembed",
+		"https://api.tumblr.com/v2/blog/*/posts",
+		"https://xkcd.com/*/info.0.json",
+		"https://api.steampowered.com/ISteamRemoteStorage/GetPublishedFileDetails/*",
+		"https://content.googleapis.com/drive/v3/*",
+
+		"https://redditenhancementsuite.com/oauth",
+		"https://accounts.google.com/o/oauth2/v2/auth",
+		"https://www.dropbox.com/oauth2/authorize",
+		"https://login.live.com/oauth20_authorize.srf"
 	]
 }

@@ -13,6 +13,7 @@
 #srList {
 	position: absolute;
 	top: 18px;
+	max-height: calc(100vh - 40px);
 	left: 0;
 	z-index: 9999;
 	display: none;
@@ -20,6 +21,7 @@
 	background-color: #FAFAFA;
 	width: auto;
 	overflow-y: auto;
+	overscroll-behavior-y: contain;
 
 	tr {
 		border-bottom: 1px solid gray;
@@ -113,7 +115,7 @@
 
 	#sortButton {
 		border: 1px solid #aaa !important;
-		border-right: none !important;
+		border-left: none !important;
 		border-radius: 3px 0 0 3px;
 		background: rgb(230, 230, 230);
 		color: #333 !important;
@@ -128,6 +130,14 @@
 		font-size: 100% !important;
 	}
 
+	#shortcut-subreddit.unsortable {
+		width: 270px;
+
+		+ #sortButton {
+			display: none !important;
+		}
+	}
+
 	.RESDescription {
 		font-size: smaller;
 		color: #666;
@@ -135,17 +145,14 @@
 	}
 
 	// Fix a Firefox alignment quirk with -moz-focus-inner
-	// scss-lint:disable PseudoElement
 	#sortButton::-moz-focus-inner,
 	#shortcut-subreddit::-moz-focus-inner {
 		border: none;
 		padding: 0;
 	}
-	// scss-lint:enable PseudoElement
 
 	[name=shortcut-save] {
 		float: right;
-		padding: 1px 6px;
 	}
 }
 
@@ -179,7 +186,6 @@
 	margin-left: -5px;
 
 	> .RESShortcutsEditButtons {
-		border-top: 1px rgba(0, 0, 0, .5) solid;
 
 		.res-icon {
 			color: black;
@@ -207,6 +213,7 @@
 		overflow-y: auto;
 		max-width: 300px;
 		max-height: 500px;
+		border-bottom: 1px rgba(0, 0, 0, .5) solid;
 
 		li {
 			padding: 0;
@@ -220,12 +227,21 @@
 				background-color: rgba(255, 255, 255, .6);
 			}
 		}
+
+		&:empty {
+			display: none;
+		}
+
+		&:only-child {
+			border-bottom-width: 0;
+		}
 	}
 }
 
 #RESShortcutsEditContainer {
 	width: 69px;
 	position: absolute;
+	overflow: hidden;
 	right: 0;
 	top: 0;
 	z-index: 999;
@@ -241,8 +257,7 @@
 #RESShortcutsSort,
 #RESShortcutsRight,
 #RESShortcutsLeft,
-#RESShortcutsAdd,
-#RESShortcutsTrash {
+#RESShortcutsAdd {
 	width: 16px;
 	cursor: pointer;
 	background: #F0F0F0;
@@ -273,17 +288,64 @@
 	font-size: 14px;
 }
 
-#RESShortcutsTrash {
-	display: none;
-	font-size: 17px;
-	width: 16px;
-	cursor: pointer;
-	right: 15px;
-	height: 16px;
-	position: absolute;
-	top: 0;
+#res-trash-overlay {
+	transition: opacity .2s;
+	position: fixed;
+	top: 20px;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba(255, 255, 255, .7);
+	z-index: 999;
+}
+
+#res-shortcut-trash {
+	transition: opacity .2s;
+	overflow: hidden;
 	z-index: 1000;
-	user-select: none;
+	width: 400px;
+	padding: 20px;
+	position: fixed;
+	top: 20%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, 0);
+	background-color: rgb(255, 255, 255);
+	border: 5px solid rgb(156, 193, 228);
+	border-radius: 5px;
+	box-shadow: 2px 2px 1px 0 rgba(0, 50, 100, .1);
+	font: 14px/1.5 verdana, sans-serif;
+	color: rgb(30, 30, 30);
+	box-sizing: content-box;
+
+	strong {
+		font-weight: bold;
+	}
+}
+
+#res-shortcut-trash-zone {
+	display: block;
+	padding: 10px;
+	margin: 10px 0;
+	border: 2px dashed rgb(200, 200, 200);
+	font-size: 32px;
+	text-align: center;
+	color: rgb(200, 200, 200);
+
+	&::before {
+		content: '\F155';
+		font-family: 'Batch';
+	}
+
+	&.srOver {
+		outline: none;
+		border-color: rgb(200, 50, 50);
+	}
+}
+
+#res-dragDrop-tip {
+	font-size: 12px;
+	line-height: 1.5;
 }
 
 .srSep {
@@ -314,9 +376,9 @@
 #RESShortcutsAddFormContainer {
 	display: none;
 	position: absolute;
-	width: 290px;
-	padding: 2px;
-	right: 0;
+	width: 300px;
+	padding: 5px 10px;
+	right: 2px;
 	top: 21px;
 	z-index: 10000;
 	background-color: #f0f3fc;
@@ -324,26 +386,14 @@
 	border-radius: 3px;
 	font-size: 12px;
 	color: #000;
-
-	a {
-		font-weight: bold;
-	}
-}
-
-#newShortcut {
-	width: 130px;
-}
-
-#displayName {
-	width: 130px;
+	box-sizing: content-box;
+	box-shadow: 2px 0 7px rgba(0, 0, 0, .1);
 }
 
 #shortCutsAddForm {
-	padding: 5px;
-
 	div {
-		font-size: 10px;
-		margin-bottom: 10px;
+		margin: 5px 0;
+		clear: both;
 	}
 
 	label {
@@ -351,21 +401,24 @@
 		width: 100px;
 	}
 
-	input[type=text] {
-		width: 170px;
-		margin-bottom: 6px;
+	.res-shortcuts-add-tip {
+		font-size: smaller;
+		color: #666;
 	}
-}
 
-#addSubreddit {
-	float: right;
-	cursor: pointer;
-	padding: 3px 5px;
-	font-size: 12px;
-	color: #fff;
-	border: 1px solid #636363;
-	border-radius: 3px;
-	background-color: #5cc410;
+	input[type=text] {
+		width: 200px;
+		box-sizing: border-box;
+	}
+
+	input[type=submit] {
+		float: right;
+	}
+
+	.res-shortcuts-add-footer {
+		text-align: right;
+		padding-top: 5px;
+	}
 }
 
 #sr-header-area a.RESShortcutsCurrentSub,

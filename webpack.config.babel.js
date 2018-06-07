@@ -1,95 +1,156 @@
+/* @noflow */
+
 /* eslint-disable import/no-nodejs-modules */
 
-import { basename, join } from 'path';
+import path from 'path';
 
 import InertEntryPlugin from 'inert-entry-webpack-plugin';
-import ProgressBarPlugin from 'progress-bar-webpack-plugin';
-import autoprefixer from 'autoprefixer';
-import webpack from 'webpack';
-import yargs from 'yargs';
-
-import babelrc from './.babelrc.json';
+import LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
+import ZipPlugin from 'zip-webpack-plugin';
 
 const browserConfig = {
 	chrome: {
+		target: 'chrome',
 		entry: 'chrome/manifest.json',
-		environment: 'chrome/environment',
 		output: 'chrome',
 	},
-	edge: {
-		entry: 'edge/manifest.json',
-		environment: 'edge/environment',
-		output: 'edge',
+	chromebeta: {
+		target: 'chrome',
+		entry: 'chrome/beta/manifest.json',
+		output: 'chrome-beta',
 	},
-	safari: {
-		entry: 'safari/info.plist',
-		environment: 'safari/environment',
-		output: 'RES.safariextension',
+	edge: {
+		target: 'edge',
+		entry: 'edge/appxmanifest.xml',
+		output: 'edgeextension/manifest',
+		noZip: true,
 	},
 	firefox: {
-		entry: 'firefox/package.json',
-		environment: 'firefox/environment',
+		target: 'firefox',
+		entry: 'firefox/manifest.json',
 		output: 'firefox',
+		noSourcemap: true,
 	},
-	node: {
-		entry: 'node/files.json',
-		environment: 'node/environment',
-		output: 'node',
+	firefoxbeta: {
+		target: 'firefox',
+		entry: 'firefox/beta/manifest.json',
+		output: 'firefox-beta',
 	},
 };
 
-const browsers = typeof yargs.argv.browsers === 'string' ? yargs.argv.browsers.split(',') : ['chrome'];
+export default (env = {}, argv = {}) => {
+	const isProduction = argv.mode === 'production';
+	const browsers = (
+		typeof env.browsers !== 'string' ? ['chrome'] :
+		env.browsers === 'all' ? Object.keys(browserConfig) :
+		env.browsers.split(',')
+	);
 
-const configs = browsers.map(browser => {
-	// extra transforms for Safari
-	const babelConfig = {
-		...babelrc,
-		...(browser === 'safari' ? babelrc.env.safari : {}),
-		babelrc: false,
-	};
-
-	return {
-		entry: `extricate!interpolate!./${browserConfig[browser].entry}`,
-		bail: process.env.NODE_ENV !== 'development',
+	const configs = browsers.map(b => browserConfig[b]).map(conf => ({
+		entry: `extricate-loader!interpolate-loader!./${conf.entry}`,
 		output: {
-			path: join(__dirname, 'dist', browserConfig[browser].output),
-			filename: basename(browserConfig[browser].entry),
+			path: path.join(__dirname, 'dist', conf.output),
+			filename: path.basename(conf.entry),
 		},
-		devtool: '#cheap-module-source-map',
-		resolve: {
-			alias: {
-				browserEnvironment$: join(__dirname, browserConfig[browser].environment),
-			},
-		},
+		devtool: (() => {
+			if (!isProduction) return 'cheap-source-map';
+			if (!conf.noSourcemap) return 'source-map';
+			return false;
+		})(),
+		node: false,
+		performance: false,
 		module: {
-			loaders: [
-				{ test: /\.entry\.js$/, loaders: ['spawn?name=[name].js', `babel?${JSON.stringify(babelConfig)}`] },
-				{ test: /\.js$/, exclude: join(__dirname, 'node_modules'), loader: 'babel', query: babelConfig },
-				{ test: /\.js$/, include: join(__dirname, 'node_modules'), loader: 'babel', query: { plugins: ['transform-dead-code-elimination', 'transform-node-env-inline'], compact: true, babelrc: false } },
-				{ test: /\.mustache$/, loader: 'mustache' },
-				{ test: /\.scss$/, loaders: ['file?name=[name].css', 'extricate?resolve=\\.js$', 'css', 'postcss', 'sass'] },
-				{ test: /\.html$/, loaders: ['file?name=[name].[ext]', 'extricate', 'html?attrs=link:href script:src'] },
-				{ test: /\.png$/, exclude: join(__dirname, 'lib', 'images'), loader: 'file?name=[name].[ext]' },
-				{ test: /\.png$/, include: join(__dirname, 'lib', 'images'), loader: 'url' },
-			],
-			noParse: [
-				// to use `require` in Firefox and Node
-				/_nativeRequire\.js$/,
-			],
+			rules: [{
+				test: /\.entry\.js$/,
+				use: [
+					{ loader: 'spawn-loader' },
+				],
+			}, {
+				test: /\.js$/,
+				exclude: path.join(__dirname, 'node_modules'),
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							plugins: [
+								'transform-export-extensions',
+								'transform-class-properties',
+								['transform-object-rest-spread', { useBuiltIns: true }],
+								'transform-flow-strip-types',
+								'transform-dead-code-elimination',
+								['transform-define', {
+									'process.env.BUILD_TARGET': conf.target,
+									'process.env.NODE_ENV': argv.mode,
+								}],
+								'lodash',
+							],
+							comments: !isProduction,
+							babelrc: false,
+						},
+					},
+				],
+			}, {
+				test: /\.js$/,
+				include: path.join(__dirname, 'node_modules'),
+				use: [
+					{
+						loader: 'babel-loader',
+						options: {
+							plugins: [
+								'transform-dead-code-elimination',
+								['transform-define', {
+									'process.env.NODE_ENV': argv.mode,
+								}],
+							],
+							compact: true,
+							comments: false,
+							babelrc: false,
+						},
+					},
+				],
+			}, {
+				test: /\.scss$/,
+				use: [
+					{ loader: 'file-loader', options: { name: '[name].css' } },
+					{ loader: 'extricate-loader', options: { resolve: '\\.js$' } },
+					{ loader: 'css-loader' },
+					{ loader: 'postcss-loader' },
+					{ loader: 'sass-loader' },
+				],
+			}, {
+				test: /\.html$/,
+				use: [
+					{ loader: 'file-loader', options: { name: '[name].[ext]' } },
+					{ loader: 'extricate-loader' },
+					{ loader: 'html-loader', options: { attrs: ['link:href', 'script:src'] } },
+				],
+			}, {
+				test: /\.(png|gif|svg)$/,
+				exclude: path.join(__dirname, 'lib', 'images'),
+				use: [
+					{ loader: 'file-loader', options: { name: '[name].[ext]' } },
+				],
+			}, {
+				test: /\.(png|gif|svg)$/,
+				include: path.join(__dirname, 'lib', 'images'),
+				use: [
+					{ loader: 'url-loader' },
+				],
+			}],
+		},
+		optimization: {
+			minimize: false,
+			concatenateModules: true,
 		},
 		plugins: [
-			new ProgressBarPlugin(),
-			new webpack.DefinePlugin({
-				'process.env': {
-					BUILD_TARGET: JSON.stringify(browser),
-				},
-			}),
 			new InertEntryPlugin(),
-		],
-		postcss() {
-			return [autoprefixer];
-		},
-	};
-});
+			new LodashModuleReplacementPlugin(),
+			(env.zip && !conf.noZip && new ZipPlugin({
+				path: path.join('..', 'zip'),
+				filename: conf.output,
+			})),
+		].filter(x => x),
+	}));
 
-export default (configs.length === 1 ? configs[0] : configs);
+	return (configs.length === 1 ? configs[0] : configs);
+};

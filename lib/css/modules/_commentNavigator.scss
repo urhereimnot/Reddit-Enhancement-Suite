@@ -1,45 +1,83 @@
+.res-commentNavToggle {
+	display: inline-block;
+	font-size: 12px;
+	margin-left: 8px;
+	cursor: pointer;
+
+	&::after {
+		content: '»';
+		display: inline-block;
+		margin-left: 2px;
+		transform: rotate(90deg);
+	}
+
+	&-choices {
+		cursor: initial;
+		z-index: 41;
+		display: none;
+		position: absolute;
+		background-color: rgba(255, 255, 255, .9);
+		padding: 8px;
+		border-radius: 3px;
+		box-shadow: rgb(144, 144, 144) 1px 2px 4px;
+
+		&[category=new] {
+			color: #9A7D2E;
+		}
+	}
+
+	&:hover &-choices { display: block; }
+
+	&-type {
+		color: grey;
+		cursor: pointer;
+		font-weight: bold;
+		width: 100%;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+}
+
 #REScommentNavBox {
 	clear: both;
-	margin-top: 10px;
-	width: 265px;
-	border: 1px solid gray;
-	background-color: #fff;
+	float: right;
+	width: 50px;
+	margin-top: 5px;
+	padding: 3px;
 	opacity: .3;
 	user-select: none;
 	transition: opacity .5s ease-in;
 
+	&:focus-within,
 	&:hover {
 		opacity: 1;
 	}
-}
 
-#REScommentNavToggle {
-	clear: left;
-}
+	select {
+		width: 100%;
 
-.menuarea > .spacer {
-	float: left;
+		&:not(:focus) option span {
+			display: none;
+		}
+	}
 }
 
 #commentNavButtons {
-	display: none;
-	margin: auto auto auto 12px;
 	text-align: center;
-	user-select: none;
 }
 
 #commentNavUp,
 #commentNavDown {
-	cursor: pointer;
+	all: unset;
 	color: #1278D3;
-	border: none;
-	background: transparent;
-	padding: 0;
+	cursor: pointer;
 	font-size: 35px;
-	line-height: .9;
+	clip-path: inset(7px 0);
+	margin: -7px 0;
 
 	&:focus {
-		outline: none;
 		text-shadow: 0 0 5px #1278D3;
 	}
 
@@ -49,30 +87,6 @@
 	}
 }
 
-.commentNavSortType {
-	cursor: pointer;
-	font-weight: bold;
-	display: inline-block;
-
-	&:hover {
-		text-decoration: underline;
-	}
-
-	+ .commentNavSortType {
-		border-left: 1px #ccc solid;
-		margin-left: .5em;
-		padding-left: .5em;
-	}
-}
-
 #commentNavPostCount {
 	color: #1278d3;
-}
-
-.noNav #commentNavPostCount {
-	color: #666;
-}
-
-.commentNavSortTypeDisabled {
-	color: #666;
 }

@@ -1,17 +1,32 @@
 #RESAccountSwitcherDropdown {
-	min-width: 110px;
-	width: auto;
 	display: none;
+	max-height: calc(100vh - 80px);
+	min-width: 110px;
+	overflow-x: hidden;
+	overflow-y: auto;
 	position: absolute;
+	width: auto;
 	z-index: 1000;
 
 	li {
 		height: auto;
 		line-height: 20px;
-		padding: 2px 10px;
+		padding: 2px 5px 2px 10px;
 
 		span {
 			margin-left: 8px;
+		}
+	}
+
+	.linkIcon {
+		display: inline;
+		float: right;
+		font-size: .9rem;
+		padding-top: 3px;
+		margin-left: 8px;
+
+		&::before {
+			content: '\F02E';
 		}
 	}
 }
@@ -24,7 +39,8 @@
 		width: 12px;
 		vertical-align: middle;
 		height: 16px;
-		background: url('../images/accountSwitcherSnoo.png') no-repeat;
+		background-image: url('../images/accountSwitcherSnoo.png');
+		background-repeat: no-repeat;
 	}
 
 	#RESAccountSwitcherIconOverlay {
